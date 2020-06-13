@@ -1,32 +1,14 @@
-import React, { Component } from "react";
+import React from "react";
 import UserItem from "./user-item/UserItem.component";
+import Spinner from "../layout/spinner/Spinner.component";
+import PropTypes from "prop-types";
 import "./Users.styles.css";
 
-class Users extends Component {
-  state = {
-    users: [
-      {
-        id: "1",
-        login: "Mojombo",
-        avatar_url: "https://avatars0.githubusercontent.com/u/1?v=4",
-        html_url: "https://api.github.com/users/mojombo",
-      },
-      {
-        id: "2",
-        login: "defunkt",
-        avatar_url: "https://avatars0.githubusercontent.com/u/2?v=4",
-        html_url: "https://api.github.com/users/defunkt",
-      },
-      {
-        id: "3",
-        login: "pjhyett",
-        avatar_url: "https://avatars0.githubusercontent.com/u/3?v=4",
-        html_url: "https://api.github.com/users/pjhyett",
-      },
-    ],
-  };
-  render() {
-    const { users } = this.state;
+const Users = (props) => {
+  const { users, loading } = props;
+  if (loading) {
+    return <Spinner />;
+  } else {
     return (
       <div className="users">
         {users.map((user) => (
@@ -35,6 +17,11 @@ class Users extends Component {
       </div>
     );
   }
-}
+};
+
+Users.propTypes = {
+  users: PropTypes.array.isRequired,
+  loading: PropTypes.bool.isRequired,
+};
 
 export default Users;
