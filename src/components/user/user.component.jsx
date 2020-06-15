@@ -1,10 +1,14 @@
-import React, { Fragment, useEffect } from "react";
+import React, { Fragment, useEffect, useContext } from "react";
 import Spinner from "../layout/spinner/Spinner.component.js";
-import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import Repos from "../repos/repos.component";
+import GithubContext from "../../context/github/githubContext.js";
 
-const User = ({ user, loading, getUser, getUserRepos, repos, match }) => {
+const User = ({ match }) => {
+  const githubContext = useContext(GithubContext);
+
+  const { getUser, loading, user, getUserRepos } = githubContext;
+
   useEffect(() => {
     getUser(match.params.login);
     getUserRepos(match.params.login);
@@ -36,7 +40,7 @@ const User = ({ user, loading, getUser, getUserRepos, repos, match }) => {
       <Link to="/" className="btn btn-light">
         Back to Search
       </Link>
-      Hireable: {""}
+      Hireable:{" "}
       {hireable ? (
         <i className="fas fa-check text-success" />
       ) : (
@@ -97,17 +101,9 @@ const User = ({ user, loading, getUser, getUserRepos, repos, match }) => {
         <div className="badge badge-light">Public Repos: {public_repos}</div>
         <div className="badge badge-dark">Public Gists: {public_gists}</div>
       </div>
-      <Repos repos={repos} />
+      <Repos />
     </Fragment>
   );
-};
-
-User.propTypes = {
-  loading: PropTypes.bool,
-  user: PropTypes.object.isRequired,
-  getUser: PropTypes.func.isRequired,
-  getUserRepos: PropTypes.func.isRequired,
-  repos: PropTypes.array.isRequired,
 };
 
 export default User;
