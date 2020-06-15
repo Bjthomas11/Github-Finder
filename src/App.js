@@ -7,6 +7,7 @@ import Search from "./components/search/Search.component";
 import Alert from "./components//layout//alert/Alert.component";
 import About from "./components/pages/about/about.component.jsx";
 import axios from "axios";
+import GithubState from "./context/github/GithubState";
 import "./App.css";
 
 const App = () => {
@@ -56,52 +57,54 @@ const App = () => {
   };
 
   // setting alert when theres a 422(nothing found)
-  const settingAlert = (message, type, close) => {
+  const showAlert = (message, type, close) => {
     setAlert({ message, type, close });
     setTimeout(() => setAlert(null), 5000);
   };
 
   return (
-    <Router>
-      <div className="App">
-        <Navbar title="Github Finder" icon="fab fa-github" />
-        <div className="container">
-          <Alert alert={alert} />
-          <Switch>
-            <Route
-              exact
-              path="/"
-              render={(props) => (
-                <Fragment>
-                  <Search
-                    searchUsers={searchUsers}
-                    clearUsers={clearUsers}
-                    showClear={users.length > 0 ? true : false}
-                    setAlert={settingAlert}
+    <GithubState>
+      <Router>
+        <div className="App">
+          <Navbar title="Github Finder" icon="fab fa-github" />
+          <div className="container">
+            <Alert alert={alert} />
+            <Switch>
+              <Route
+                exact
+                path="/"
+                render={(props) => (
+                  <Fragment>
+                    <Search
+                      searchUsers={searchUsers}
+                      clearUsers={clearUsers}
+                      showClear={users.length > 0 ? true : false}
+                      setAlert={showAlert}
+                    />
+                    <Users loading={loading} users={users} />
+                  </Fragment>
+                )}
+              />
+              <Route exact path="/about" component={About} />
+              <Route
+                exact
+                path="/user/:login"
+                render={(props) => (
+                  <User
+                    {...props}
+                    getUser={getUser}
+                    user={user}
+                    repos={repos}
+                    loading={loading}
+                    getUserRepos={getUserRepos}
                   />
-                  <Users loading={loading} users={users} />
-                </Fragment>
-              )}
-            />
-            <Route exact path="/about" component={About} />
-            <Route
-              exact
-              path="/user/:login"
-              render={(props) => (
-                <User
-                  {...props}
-                  getUser={getUser}
-                  user={user}
-                  repos={repos}
-                  loading={loading}
-                  getUserRepos={getUserRepos}
-                />
-              )}
-            />
-          </Switch>
+                )}
+              />
+            </Switch>
+          </div>
         </div>
-      </div>
-    </Router>
+      </Router>
+    </GithubState>
   );
 };
 
