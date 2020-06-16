@@ -1,6 +1,6 @@
 ## Github Finder App.
 
-Site: [https://tender-jepsen-95343b.netlify.app]
+App: [https://tender-jepsen-95343b.netlify.app]
 
 Smaller app just displaying use of React, React-Router, React-Router-DOM.
 
